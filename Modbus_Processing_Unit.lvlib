@@ -4,5 +4,5 @@
 	<Property Name="NI.Lib.SourceVersion" Type="Int">402685952</Property>
 	<Property Name="NI.Lib.Version" Type="Str">1.0.0.0</Property>
 	<Property Name="NI.LV.All.SourceOnly" Type="Bool">false</Property>
-	<Item Name="MPU.vi" Type="VI" URL="../MPU.vi"/>
+	<Item Name="MPU.vi" Type="VI" URL="../src/MPU.vi"/>
 </Library>
