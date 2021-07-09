@@ -45,6 +45,9 @@
 				<Item Name="Trim Whitespace.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Trim Whitespace.vi"/>
 				<Item Name="whitespace.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/whitespace.ctl"/>
 			</Item>
+			<Item Name="NiFpgaLv.dll" Type="Document" URL="NiFpgaLv.dll">
+				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
+			</Item>
 		</Item>
 		<Item Name="Build Specifications" Type="Build"/>
 	</Item>
@@ -409,7 +412,7 @@
 					<Property Name="Type" Type="UInt">2</Property>
 					<Property Name="Type Descriptor" Type="Str">1000800000000001000940050002553800000100000000000000</Property>
 				</Item>
-				<Item Name="TestMPU.lvclass" Type="LVClass" URL="../src/TestMPU.lvclass"/>
+				<Item Name="TestMPU.lvclass" Type="LVClass" URL="../tests/TestMPU.lvclass"/>
 				<Item Name="Dependencies" Type="Dependencies">
 					<Item Name="vi.lib" Type="Folder">
 						<Item Name="Clear Errors.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Clear Errors.vi"/>
