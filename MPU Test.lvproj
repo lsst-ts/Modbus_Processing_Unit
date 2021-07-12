@@ -10,7 +10,12 @@
 		<Property Name="server.vi.callsEnabled" Type="Bool">true</Property>
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
-		<Item Name="Test Bench.vi" Type="VI" URL="../tests/Test Bench.vi"/>
+		<Item Name="Simulator.vi" Type="VI" URL="../tests/Simulator.vi"/>
+		<Item Name="Unit Test.lvtest" Type="TestItem" URL="../tests/Unit Test.lvtest">
+			<Property Name="utf.test.bind" Type="Str">Unit Test.vi</Property>
+			<Property Name="utf.vector.test.bind" Type="Str">BF395899-6211-BCEA-AF22-A7FF80E58D49</Property>
+		</Item>
+		<Item Name="Unit Test.vi" Type="VI" URL="../tests/Unit Test.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="BuildHelpPath.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/BuildHelpPath.vi"/>
