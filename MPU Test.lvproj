@@ -16,11 +16,6 @@
 		</Item>
 		<Item Name="DEN Unit Tests.vi" Type="VI" URL="../tests/DEN Unit Tests.vi"/>
 		<Item Name="Simulator.vi" Type="VI" URL="../tests/Simulator.vi"/>
-		<Item Name="Unit Test.lvtest" Type="TestItem" URL="../tests/Unit Test.lvtest">
-			<Property Name="utf.test.bind" Type="Str">Unit Test.vi</Property>
-			<Property Name="utf.vector.test.bind" Type="Str">BF395899-6211-BCEA-AF22-A7FF80E58D49</Property>
-		</Item>
-		<Item Name="Unit Test.vi" Type="VI" URL="../tests/Unit Test.vi"/>
 		<Item Name="Dependencies" Type="Dependencies">
 			<Item Name="vi.lib" Type="Folder">
 				<Item Name="BuildHelpPath.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/BuildHelpPath.vi"/>
@@ -54,9 +49,6 @@
 				<Item Name="Three Button Dialog.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Three Button Dialog.vi"/>
 				<Item Name="Trim Whitespace.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Trim Whitespace.vi"/>
 				<Item Name="whitespace.ctl" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/whitespace.ctl"/>
-			</Item>
-			<Item Name="NiFpgaLv.dll" Type="Document" URL="NiFpgaLv.dll">
-				<Property Name="NI.PreserveRelativePath" Type="Bool">true</Property>
 			</Item>
 		</Item>
 		<Item Name="Build Specifications" Type="Build"/>
