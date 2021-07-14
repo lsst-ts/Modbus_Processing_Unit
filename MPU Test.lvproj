@@ -10,6 +10,10 @@
 		<Property Name="server.vi.callsEnabled" Type="Bool">true</Property>
 		<Property Name="server.vi.propertiesEnabled" Type="Bool">true</Property>
 		<Property Name="specify.custom.address" Type="Bool">false</Property>
+		<Item Name="CRC.lvtest" Type="TestItem" URL="../tests/CRC.lvtest">
+			<Property Name="utf.test.bind" Type="Str">CRC.vi</Property>
+			<Property Name="utf.vector.test.bind" Type="Str">11708BF6-A66C-41C4-24D7-AE89CF008826</Property>
+		</Item>
 		<Item Name="DEN Unit Tests.lvtest" Type="TestItem" URL="../tests/DEN Unit Tests.lvtest">
 			<Property Name="utf.test.bind" Type="Str">DEN Unit Tests.vi</Property>
 			<Property Name="utf.vector.test.bind" Type="Str">B11805C4-910E-169B-82ED-C0146C9779E4</Property>
