@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<nidocument>
+<nicomment>
+Custom errors for Modbus processing
+
+<nifamily familyname="Modbus Processing Unit error codes" displayname="Modbus Processing Unit error codes">
+</nifamily>
+</nicomment>
+<nierror code="6000">
+Invalid CRC received
+</nierror>
+<nierror code="5001">
+
+</nierror>
+</nidocument>
