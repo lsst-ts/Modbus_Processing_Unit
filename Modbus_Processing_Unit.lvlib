@@ -4,5 +4,6 @@
 	<Property Name="NI.Lib.SourceVersion" Type="Int">402685952</Property>
 	<Property Name="NI.Lib.Version" Type="Str">1.0.0.0</Property>
 	<Property Name="NI.LV.All.SourceOnly" Type="Bool">false</Property>
+	<Item Name="CRC.vi" Type="VI" URL="../src/CRC.vi"/>
 	<Item Name="MPU.lvclass" Type="LVClass" URL="../src/MPU.lvclass"/>
 </Library>
