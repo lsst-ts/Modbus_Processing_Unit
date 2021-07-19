@@ -26,7 +26,7 @@ Those instructions are supported:
    looping, a check for commanding FIFO will be provided, and if that contains
    new instructions, instruction stack will be replaced with those new
    instructions)
-5. check read CRC, assumes cRC are two last bytes read
+5. check read CRC, assumes CRC are two last bytes read
 6. write data to output FIFO
 255. stops application loop, exit FPGA application
 
