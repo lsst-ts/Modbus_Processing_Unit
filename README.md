@@ -26,13 +26,14 @@ Those instructions are supported:
    looping, a check for commanding FIFO will be provided, and if that contains
    new instructions, instruction stack will be replaced with those new
    instructions)
-5. write data to output FIFO
+5. check readout [CRC](https://en.wikipedia.org/wiki/Cyclic_redundancy_check),
+   assumes CRC are two last bytes read. If CRC doesn't match, error 6000 is
+   reported and FPGA processing stops.
+6. write data to output FIFO
 255. stops application loop, exit FPGA application
 
 Future (currently unsupported) instructions:
 
-* check [CRC](https://en.wikipedia.org/wiki/Cyclic_redundancy_check) of data
-  stored in output array
 * write something (transformed part of output array) to telemetry FIFO
 * optionally (if we need it) conditional branching can be provided
 
@@ -46,7 +47,7 @@ and replies can be stored.
 
 On errors, something has to be written into telemetry and processing ought
 usually stop; we might devise options to handle errors better, but that shall
-be the first approach. It's left up to realtime (CPU application) to handle
+be the first approach. It's left up to real-time (CPU application) to handle
 errors (check telemetry library the unit isn't executing/writing data) and
 decide what to do (usually, as this violates safety rules, CSC will be
 commanded to transition into fault state).
@@ -57,7 +58,7 @@ Inconclusive list of errors:
 * went past instruction array end
 * unable to write to the port
 * timeout reading data from the port
-* invalid Modbus CRC/checksum
+* invalid Modbus CRC/checksum (reported in Error output)
 
 # Unit Tests
 
