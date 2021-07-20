@@ -30,6 +30,8 @@ Those instructions are supported:
    assumes CRC are two last bytes read. If CRC doesn't match, error 6000 is
    reported and FPGA processing stops.
 6. write data to output FIFO
+20. write multiple bytes. Followed by number of bytes and paylod (bytes to
+    transwer)
 255. stops application loop, exit FPGA application
 
 Future (currently unsupported) instructions:
