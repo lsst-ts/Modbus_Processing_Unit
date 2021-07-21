@@ -29,6 +29,7 @@ reading out data from Modbus devices. The design includes:
 | 6           | Write data to output FIFO.                              |
 | 20          | Write multiple bytes. Followed by number of bytes and paylod (bytes to transwer). |
 | 30          | Write single byte to telemetry. Instruction shall be followed with telemetry address offset and output array offset. |
+| 31          | Write two bytes to telemetry. Instruction shall be followed with telemetry address offset and output array offset (of the first byte). |
 | 255         | Stops application loop, exit FPGA application. |
 
 Future (currently unsupported) instructions:
