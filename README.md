@@ -30,11 +30,16 @@ reading out data from Modbus devices. The design includes:
 | 20          | Write multiple bytes. Followed by number of bytes and paylod (bytes to transwer). |
 | 30          | Write single byte to telemetry. Instruction shall be followed with telemetry address offset and output array offset. |
 | 31          | Write two bytes to telemetry. Instruction shall be followed with telemetry address offset and output array offset (of the first byte). |
+| 32          | Write four bytes to telemetry. Instruction shall be followed with telemetry address offset and output array offset (of the first byte). |
+| 33          | Write eight bytes to telemetry. Instruction shall be followed with telemetry address offset and output array offset (of the first byte). |
 | 255         | Stops application loop, exit FPGA application. |
 
-Future (currently unsupported) instructions:
+### Telemetry
 
-* write something (transformed part of output array) to telemetry FIFO
+Telemetry commands (30-34) produces big endian numbers.
+
+## Future (currently unsupported) instructions:
+
 * optionally (if we need it) conditional branching can be provided
 
 This shall fit most of the single use Modbus devices, usually read-only
