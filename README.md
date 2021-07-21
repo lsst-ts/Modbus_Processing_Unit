@@ -16,23 +16,20 @@ reading out data from Modbus devices. The design includes:
   values readout from device
 * optional (user commanded) raw output to output FIFO
 
-Those instructions are supported:
+## Supported instructions
 
-0. stop executing and wait for a new instructions in FIFO
-1. write the next byte to the port
-2. wait for given ms
-3. read from the port and store data into output array
-4. loop (jump to some instruction, usually 0 to repeat the sequence; with
-   looping, a check for commanding FIFO will be provided, and if that contains
-   new instructions, instruction stack will be replaced with those new
-   instructions)
-5. check readout [CRC](https://en.wikipedia.org/wiki/Cyclic_redundancy_check),
-   assumes CRC are two last bytes read. If CRC doesn't match, error 6000 is
-   reported and FPGA processing stops.
-6. write data to output FIFO
-20. write multiple bytes. Followed by number of bytes and paylod (bytes to
-    transwer)
-255. stops application loop, exit FPGA application
+| Instruction | Description                                             |
+| ----------- | ------------------------------------------------------- |
+| 0           | Stop executing and wait for a new instructions in FIFO. |
+| 1           | Write the next byte to the port.                        |
+| 2           | Wait for given ms.                                      |
+| 3           | Read from the port and store data into output array.    |
+| 4           | Loop (jump to some instruction, usually 0 to repeat the sequence; with  looping, a check for commanding FIFO will be provided, and if that contains new instructions, instruction stack will be replaced with those new instructions). |
+| 5           | Check readout [CRC](https://en.wikipedia.org/wiki/Cyclic_redundancy_check), assumes CRC are two last bytes read. If CRC doesn't match, error 6000 is reported and FPGA processing stops. |
+| 6           | Write data to output FIFO.                              |
+| 20          | Write multiple bytes. Followed by number of bytes and paylod (bytes to transwer). |
+| 30          | Write single byte to telemetry. Instruction shall be followed with telemetry address offset and output array offset. |
+| 255         | Stops application loop, exit FPGA application. |
 
 Future (currently unsupported) instructions:
 
