@@ -36,7 +36,9 @@ reading out data from Modbus devices. The design includes:
 
 ### Telemetry
 
-Telemetry commands (30-34) writes big endian numbers.
+Telemetry commands (30-34) writes big endian numbers. Telemetry uses [Common
+FPGA HealthAndStatus](https://github.com/lsst-ts/Common_FPGA_HealthAndStatus)
+update FIFO.
 
 ### Example
 
