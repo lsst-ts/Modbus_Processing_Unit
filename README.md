@@ -24,7 +24,7 @@ reading out data from Modbus devices. The design includes:
 | 1           | Write the next byte to the port.                        |
 | 2           | Wait for given ms.                                      |
 | 3           | Read from the port and store data into output array.    |
-| 4           | Loop (jump to some instruction, usually 0 to repeat the sequence; with  looping, a check for commanding FIFO will be provided, and if that contains new instructions, instruction stack will be replaced with those new instructions). |
+| 4           | Loop (jump to some instruction, usually 0 to repeat the sequence; with looping, a check for commanding FIFO will be provided, and if that contains new instructions, instruction stack will be replaced with those new instructions). |
 | 5           | Check readout [CRC](https://en.wikipedia.org/wiki/Cyclic_redundancy_check), assumes CRC are two last bytes read. If CRC doesn't match, error 6000 is reported and FPGA processing stops. |
 | 6           | Write data to output FIFO.                              |
 | 20          | Write multiple bytes. Followed by number of bytes and paylod (bytes to transwer). |
@@ -56,10 +56,10 @@ When following is passed to input FIFO, the processing unit will:
 The loops get repeated as long as new instructions aren't available on
 commanding FIFO, or an error occurs.
 
-0. 23
-1. 20 4 1 58 80 33
+0. 23  *sends 23 bytes as commands/data*
+1. 20 4 1 58 0x80 0x33
 2. 2 100
-3. 3 16
+3. 3 18
 4. 5
 5. 31 11 2
 6. 33 22 4
@@ -67,7 +67,7 @@ commanding FIFO, or an error occurs.
 8. 2 500
 9. 4
 
-Assuming device response is (CRC is 0x6676):
+Assuming device response is (CRC is 0x6676, hex numbers are prefixed with 0x):
 
 1 58 0x11 0x12 0x13 0x14 0x15 0x16 0x17 0x18 0x19 0x20 0x21 0x22 0x23 0x24 0x76 0x66
 
@@ -76,6 +76,8 @@ The following commands will be send to telemetry FIFO:
 * set address 11 to 0x1112
 * set address 22 to 0x1314151617181920
 * set address 67 to 0x21222324
+
+This is implemented in unit test 14.
 
 ## Future (currently unsupported) instructions:
 
