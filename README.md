@@ -16,6 +16,12 @@ reading out data from Modbus devices. The design includes:
   values readout from device
 * optional (user commanded) raw output to output FIFO
 
+## Usage
+
+Add the library to your project. Create MPU object, and execute its Run method.
+You need to provide Command, Telemetry and Debug (Output) FIFOs, and port for
+commands. See [Example.vi](Example.vi) for details.
+
 ## Supported instructions
 
 | Instruction | Description                                             |
