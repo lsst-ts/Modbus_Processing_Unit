@@ -38,6 +38,7 @@ commands. See [Example.vi](Example.vi) for details.
 | 31          | Write two bytes to telemetry. Instruction shall be followed with telemetry address offset and output array offset (of the first byte). |
 | 32          | Write four bytes to telemetry. Instruction shall be followed with telemetry address offset and output array offset (of the first byte). |
 | 33          | Write eight bytes to telemetry. Instruction shall be followed with telemetry address offset and output array offset (of the first byte). |
+| 50          | Write to debug output port statistics - 64 bits (so 8*8 bits) output, input, counters and timeouts. |
 | 255         | Stops application loop, exit FPGA application. |
 
 ### Telemetry
@@ -45,6 +46,16 @@ commands. See [Example.vi](Example.vi) for details.
 Telemetry commands (30-34) writes big endian numbers. Telemetry uses [Common
 FPGA HealthAndStatus](https://github.com/lsst-ts/Common_FPGA_HealthAndStatus)
 update FIFO.
+
+## Port statistics
+
+Port statistics command (50) writes to debug output following values. Values
+are written as low endian 64 bits numbers.
+
+* output counter - how many bytes were written to the port
+* input counter - how many bytes were received on the port
+* output timeout - how many writes timeouted
+* input timeout - how many reads timeouted
 
 ### Example
 
