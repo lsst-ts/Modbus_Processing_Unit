@@ -562,6 +562,7 @@
 						<Item Name="lvSimController.dll" Type="Document" URL="/&lt;vilib&gt;/rvi/Simulation/lvSimController.dll"/>
 					</Item>
 					<Item Name="FPGAHealthAndStatus.lvlib" Type="Library" URL="../../ts_m1m3supportFPGA/src/Common_FPGA_HealthAndStatus/FPGAHealthAndStatus.lvlib"/>
+					<Item Name="_U64Out.vi" Type="VI" URL="../src/_U64Out.vi"/>
 				</Item>
 				<Item Name="Build Specifications" Type="Build"/>
 			</Item>
