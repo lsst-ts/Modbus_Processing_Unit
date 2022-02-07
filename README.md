@@ -36,6 +36,7 @@ commands. See [Example.vi](Example.vi) for details.
 | 20          | Write multiple bytes. Followed by number of bytes and paylod (bytes to transfer). |
 | 30          | Write byte(s) to telemetry. Instruction shall be followed with number of bytes and output array offset. |
 | 50          | Write to debug output port statistics - 64 bits (so 8*8 bits) output, input, counters and timeouts. |
+| 254         | Primary for tests only - same as 255, but introduces -20 error. |
 | 255         | Stops application loop, exit FPGA application. |
 
 ### Telemetry
