@@ -33,11 +33,8 @@ commands. See [Example.vi](Example.vi) for details.
 | 4           | Loop (jump to some instruction, usually 0 to repeat the sequence; with looping, a check for commanding FIFO will be provided, and if that contains new instructions, instruction stack will be replaced with those new instructions). |
 | 5           | Check readout [CRC](https://en.wikipedia.org/wiki/Cyclic_redundancy_check), assumes CRC are two last bytes read. If CRC doesn't match, error 6000 is reported and FPGA processing stops. |
 | 6           | Write data to output FIFO.                              |
-| 20          | Write multiple bytes. Followed by number of bytes and paylod (bytes to transwer). |
-| 30          | Write single byte to telemetry. Instruction shall be followed with telemetry address offset and output array offset. |
-| 31          | Write two bytes to telemetry. Instruction shall be followed with telemetry address offset and output array offset (of the first byte). |
-| 32          | Write four bytes to telemetry. Instruction shall be followed with telemetry address offset and output array offset (of the first byte). |
-| 33          | Write eight bytes to telemetry. Instruction shall be followed with telemetry address offset and output array offset (of the first byte). |
+| 20          | Write multiple bytes. Followed by number of bytes and paylod (bytes to transfer). |
+| 30          | Write byte(s) to telemetry. Instruction shall be followed with number of bytes and output array offset. |
 | 50          | Write to debug output port statistics - 64 bits (so 8*8 bits) output, input, counters and timeouts. |
 | 255         | Stops application loop, exit FPGA application. |
 
