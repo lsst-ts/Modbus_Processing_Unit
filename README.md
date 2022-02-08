@@ -33,12 +33,10 @@ commands. See [Example.vi](Example.vi) for details.
 | 4           | Loop (jump to some instruction, usually 0 to repeat the sequence; with looping, a check for commanding FIFO will be provided, and if that contains new instructions, instruction stack will be replaced with those new instructions). |
 | 5           | Check readout [CRC](https://en.wikipedia.org/wiki/Cyclic_redundancy_check), assumes CRC are two last bytes read. If CRC doesn't match, error 6000 is reported and FPGA processing stops. |
 | 6           | Write data to output FIFO.                              |
-| 20          | Write multiple bytes. Followed by number of bytes and paylod (bytes to transwer). |
-| 30          | Write single byte to telemetry. Instruction shall be followed with telemetry address offset and output array offset. |
-| 31          | Write two bytes to telemetry. Instruction shall be followed with telemetry address offset and output array offset (of the first byte). |
-| 32          | Write four bytes to telemetry. Instruction shall be followed with telemetry address offset and output array offset (of the first byte). |
-| 33          | Write eight bytes to telemetry. Instruction shall be followed with telemetry address offset and output array offset (of the first byte). |
+| 20          | Write multiple bytes. Followed by number of bytes and paylod (bytes to transfer). |
+| 30          | Write byte(s) to telemetry. Instruction shall be followed with number of bytes and output array offset. |
 | 50          | Write to debug output port statistics - 64 bits (so 8*8 bits) output, input, counters and timeouts. |
+| 254         | Primary for tests only - same as 255, but introduces -20 error. |
 | 255         | Stops application loop, exit FPGA application. |
 
 ### Telemetry
@@ -67,10 +65,8 @@ When following is passed to input FIFO, the processing unit will:
 4. check CRC
 5. writes two first bytes from payload (indices 2 and 3; first two bytes are
    address and function) to telemetry at addrress 11
-6. writes eight bytes from payload indices 4-11 to telemetry at address 22
-7. writes four bytes (indices 12-15) to telemetry at address 67
-8. waits 500 milliseconds
-9. closes loop (call again function 58,..)
+6. waits 500 milliseconds
+7. closes loop (call again function 58,..)
 
 The loops get repeated as long as new instructions aren't available on
 commanding FIFO, or an error occurs.
@@ -80,23 +76,17 @@ commanding FIFO, or an error occurs.
 2. 2 100
 3. 3 18
 4. 5
-5. 31 11 2
-6. 33 22 4
-7. 32 67 12
-8. 2 500
-9. 4
+5. 30 0 18
+7. 2 500
+8. 4
 
 Assuming device response is (CRC is 0x6676, hex numbers are prefixed with 0x):
 
 1 58 0x11 0x12 0x13 0x14 0x15 0x16 0x17 0x18 0x19 0x20 0x21 0x22 0x23 0x24 0x76 0x66
 
-The following commands will be send to telemetry FIFO:
+This will be also available in Telemtry FIFO
 
-* set address 11 to 0x1112
-* set address 22 to 0x1314151617181920
-* set address 67 to 0x21222324
-
-This is implemented in unit test 14.
+This is implemented in unit test "README.md".
 
 ## Future (currently unsupported) instructions:
 
