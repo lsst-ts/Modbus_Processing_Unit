@@ -118,7 +118,7 @@ Inconclusive list of errors:
 
 ### Custom error signals
 
-* **-20** after instructions 254 (signals instruction ended FPGA execution)
+* **-20** after instruction 254 (signals instruction ended FPGA execution)
 * **-21** cannot write data - write timeouted
 * **-22** cannot read data - read timeouted
 
