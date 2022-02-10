@@ -116,6 +116,12 @@ Inconclusive list of errors:
 * timeout reading data from the port
 * invalid Modbus CRC/checksum (reported in Error output)
 
+### Custom error signals
+
+* **-20** after instructions 254 (signals instruction ended FPGA execution)
+* **-21** cannot write data - write timeouted
+* **-22** cannot read data - read timeouted
+
 # Unit Tests
 
 The "MPU Test" project contains unit tests for FPGA IP. Just open it and run
