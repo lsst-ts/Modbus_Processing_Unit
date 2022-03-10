@@ -12,8 +12,7 @@ reading out data from Modbus devices. The design includes:
   them
 * output array. The responses from Modbus devices are stored in it, as
   commanded (readout command)
-* output to telemetry FIFO, with commands to update telemetry memory with
-  values readout from device
+* output to telemetry FIFO register values, etc
 * optional (user commanded) raw output to output FIFO
 
 ## Usage
@@ -36,19 +35,17 @@ commands. See [Example.vi](Example.vi) for details.
 | 20          | Write multiple bytes. Followed by number of bytes and paylod (bytes to transfer). |
 | 30          | Write byte(s) to telemetry. Instruction shall be followed with number of bytes and output array offset. |
 | 50          | Write to debug output port statistics - 64 bits (so 8*8 bits) output, input, counters and timeouts. |
-| 254         | Primary for tests only - same as 255, but introduces -20 error. |
 | 255         | Stops application loop, exit FPGA application. |
 
 ### Telemetry
 
-Telemetry commands (30-34) writes big endian numbers. Telemetry uses [Common
-FPGA HealthAndStatus](https://github.com/lsst-ts/Common_FPGA_HealthAndStatus)
-update FIFO.
+Telemetry command (3o) dumps U8 values. Offset is calucalted from 0. This can
+be used to periodically dump measured values.
 
 ## Port statistics
 
 Port statistics command (50) writes to debug output following values. Values
-are written as low endian 64 bits numbers.
+are written as low endian 64 bits numbers (into U8 FIFO).
 
 * output counter - how many bytes were written to the port
 * input counter - how many bytes were received on the port
@@ -102,11 +99,13 @@ and replies can be stored.
 ## Error handling
 
 On errors, something has to be written into telemetry and processing ought
-usually stop; we might devise options to handle errors better, but that shall
+us
+ually stop; we might devise options to handle errors better, but that shall
 be the first approach. It's left up to real-time (CPU application) to handle
 errors (check telemetry library the unit isn't executing/writing data) and
 decide what to do (usually, as this violates safety rules, CSC will be
 commanded to transition into fault state).
+ok
 
 Inconclusive list of errors:
 
@@ -116,9 +115,8 @@ Inconclusive list of errors:
 * timeout reading data from the port
 * invalid Modbus CRC/checksum (reported in Error output)
 
-### Custom error signals
+### Custom error values
 
-* **-20** after instruction 254 (signals instruction ended FPGA execution)
 * **-21** cannot write data - write timeouted
 * **-22** cannot read data - read timeouted
 
