@@ -119,6 +119,7 @@ Inconclusive list of errors:
 
 * **-21** cannot write data - write timeouted
 * **-22** cannot read data - read timeouted
+* **-23** invalid CRC
 
 # Unit Tests
 
