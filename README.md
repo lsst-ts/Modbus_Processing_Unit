@@ -12,7 +12,7 @@ reading out data from Modbus devices. The design includes:
   them
 * output array. The responses from Modbus devices are stored in it, as
   commanded (readout command)
-* output to telemetry FIFO register values, etc
+* output to telemetry FIFO register values, etc.
 * optional (user commanded) raw output to output FIFO
 
 ## Usage
@@ -39,7 +39,7 @@ commands. See [Example.vi](Example.vi) for details.
 
 ### Telemetry
 
-Telemetry command (3o) dumps U8 values. Offset is calucalted from 0. This can
+Telemetry command (30) dumps U8 values. Offset is calucalted from 0. This can
 be used to periodically dump measured values.
 
 ## Port statistics
@@ -68,20 +68,20 @@ When following is passed to input FIFO, the processing unit will:
 The loops get repeated as long as new instructions aren't available on
 commanding FIFO, or an error occurs.
 
-0. 23  *sends 23 bytes as commands/data*
-1. 20 4 1 58 0x80 0x33
+0. 17  *sends 17 bytes as commands/data*
+1. 20 4 1 58 0x33 0x80
 2. 2 100
 3. 3 18
 4. 5
-5. 30 0 18
+5. 30 18 0
 7. 2 500
 8. 4
 
 Assuming device response is (CRC is 0x6676, hex numbers are prefixed with 0x):
 
-1 58 0x11 0x12 0x13 0x14 0x15 0x16 0x17 0x18 0x19 0x20 0x21 0x22 0x23 0x24 0x76 0x66
+1 58 0x11 0x12 0x13 0x14 0x15 0x16 0x17 0x18 0x19 0x20 0x21 0x22 0x23 0x24 83 4
 
-This will be also available in Telemtry FIFO
+This will be also available in Telemetry FIFO
 
 This is implemented in unit test "README.md".
 
@@ -105,7 +105,6 @@ be the first approach. It's left up to real-time (CPU application) to handle
 errors (check telemetry library the unit isn't executing/writing data) and
 decide what to do (usually, as this violates safety rules, CSC will be
 commanded to transition into fault state).
-ok
 
 Inconclusive list of errors:
 
