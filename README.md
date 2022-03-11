@@ -12,8 +12,7 @@ reading out data from Modbus devices. The design includes:
   them
 * output array. The responses from Modbus devices are stored in it, as
   commanded (readout command)
-* output to telemetry FIFO, with commands to update telemetry memory with
-  values readout from device
+* output to telemetry FIFO register values, etc.
 * optional (user commanded) raw output to output FIFO
 
 ## Usage
@@ -36,19 +35,17 @@ commands. See [Example.vi](Example.vi) for details.
 | 20          | Write multiple bytes. Followed by number of bytes and paylod (bytes to transfer). |
 | 30          | Write byte(s) to telemetry. Instruction shall be followed with number of bytes and output array offset. |
 | 50          | Write to debug output port statistics - 64 bits (so 8*8 bits) output, input, counters and timeouts. |
-| 254         | Primary for tests only - same as 255, but introduces -20 error. |
 | 255         | Stops application loop, exit FPGA application. |
 
 ### Telemetry
 
-Telemetry commands (30-34) writes big endian numbers. Telemetry uses [Common
-FPGA HealthAndStatus](https://github.com/lsst-ts/Common_FPGA_HealthAndStatus)
-update FIFO.
+Telemetry command (30) dumps U8 values. Offset is calucalted from 0. This can
+be used to periodically dump measured values.
 
 ## Port statistics
 
 Port statistics command (50) writes to debug output following values. Values
-are written as low endian 64 bits numbers.
+are written as low endian 64 bits numbers (into U8 FIFO).
 
 * output counter - how many bytes were written to the port
 * input counter - how many bytes were received on the port
@@ -71,20 +68,20 @@ When following is passed to input FIFO, the processing unit will:
 The loops get repeated as long as new instructions aren't available on
 commanding FIFO, or an error occurs.
 
-0. 23  *sends 23 bytes as commands/data*
-1. 20 4 1 58 0x80 0x33
+0. 17  *sends 17 bytes as commands/data*
+1. 20 4 1 58 0x33 0x80
 2. 2 100
 3. 3 18
 4. 5
-5. 30 0 18
+5. 30 18 0
 7. 2 500
 8. 4
 
 Assuming device response is (CRC is 0x6676, hex numbers are prefixed with 0x):
 
-1 58 0x11 0x12 0x13 0x14 0x15 0x16 0x17 0x18 0x19 0x20 0x21 0x22 0x23 0x24 0x76 0x66
+1 58 0x11 0x12 0x13 0x14 0x15 0x16 0x17 0x18 0x19 0x20 0x21 0x22 0x23 0x24 83 4
 
-This will be also available in Telemtry FIFO
+This will be also available in Telemetry FIFO
 
 This is implemented in unit test "README.md".
 
@@ -102,7 +99,8 @@ and replies can be stored.
 ## Error handling
 
 On errors, something has to be written into telemetry and processing ought
-usually stop; we might devise options to handle errors better, but that shall
+us
+ually stop; we might devise options to handle errors better, but that shall
 be the first approach. It's left up to real-time (CPU application) to handle
 errors (check telemetry library the unit isn't executing/writing data) and
 decide what to do (usually, as this violates safety rules, CSC will be
@@ -115,6 +113,12 @@ Inconclusive list of errors:
 * unable to write to the port
 * timeout reading data from the port
 * invalid Modbus CRC/checksum (reported in Error output)
+
+### Custom error values
+
+* **-21** cannot write data - write timeouted
+* **-22** cannot read data - read timeouted
+* **-23** invalid CRC
 
 # Unit Tests
 
