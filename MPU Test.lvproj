@@ -559,7 +559,7 @@
 						<Item Name="Clear Errors.vi" Type="VI" URL="/&lt;vilib&gt;/Utility/error.llb/Clear Errors.vi"/>
 						<Item Name="lvSimController.dll" Type="Document" URL="/&lt;vilib&gt;/rvi/Simulation/lvSimController.dll"/>
 					</Item>
-					<Item Name="_U64Out.vi" Type="VI" URL="../src/_U64Out.vi"/>
+					<Item Name="CopyFIFO.vi" Type="VI" URL="../../MPU/CopyFIFO.vi"/>
 				</Item>
 				<Item Name="Build Specifications" Type="Build"/>
 			</Item>
