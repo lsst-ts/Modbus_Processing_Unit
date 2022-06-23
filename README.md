@@ -46,7 +46,7 @@ not mess with program execution, as both cannot happen at the same time.
 | 3   | Read from the port and store data into output array.    |
 | 4   | Loop (jump to some instruction, usually 0 to repeat the sequence; with looping, a check for commanding FIFO will be provided, and if that contains new instructions, instruction stack will be replaced with those new instructions). |
 | 5   | Check readout [CRC](https://en.wikipedia.org/wiki/Cyclic_redundancy_check), assumes CRC are two last bytes read. If CRC doesn't match, error 6000 is reported and FPGA processing stops. |
-| 6   | Write data to output FIFO.                              |
+| 6   | Write data to output FIFO and forgots content of output memory.     |
 | 20  | Write multiple bytes. Followed by number of bytes and paylod (bytes to transfer). |
 | 30  | Write byte(s) to telemetry. Instruction shall be followed with number of bytes and output array offset. |
 | 100 | Set write and read timeouts. Shall follow with 2 16 bit big endian values for write and read timeout in ms. |
