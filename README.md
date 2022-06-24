@@ -33,8 +33,9 @@ not mess with program execution, as both cannot happen at the same time.
 | ---- | -------------------------------------------------------|
 | 0    | Clear error lines. If the program fails, error lines will be set. See unit telemetry for how to get current error lines status. |
 | 1    | Program MPU. Followed by single byte - program length, and the program itself. See below for supported instructions.            |
-| 2    | Report port telemetry to Telemetry FIFO.               |
-| 3    | Cleare unit telemetry counters.                        |
+| 2    | Report port telemetry to Telemetry FIFO.                                 |
+| 3    | Cleare unit telemetry counters.                                          |
+| 4    | Sets write and read timeouts to the following 2 16bit big endian values. |
 
 ## Supported instructions
 
