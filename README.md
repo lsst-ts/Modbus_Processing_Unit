@@ -25,16 +25,16 @@ commands. See [Example.vi](Example.vi) for details.
 
 Command queue uses own multiplex to clear MPU error lines, program MPU or
 report port status. The command queue is checked for new command after run of
-a programmed loop (which is empty on statup). If command is available, it is
+a programmed loop (which is empty on startup). If command is available, it is
 executed, if not, programmed code is executed. This quarantees programming will
 not mess with program execution, as both cannot happen at the same time.
 
 | Code | Description                                            |
 | ---- | -------------------------------------------------------|
-| 0    | Clear error lines. If the program fails, error lines will be set. See unit telemetry for how to get current error lines status. |
+| 0    | Reset error lines. If the program fails, error lines will be set. See unit telemetry for how to get current error lines status. |
 | 1    | Program MPU. Followed by single byte - program length, and the program itself. See below for supported instructions.            |
 | 2    | Report port telemetry to Telemetry FIFO.                                 |
-| 3    | Cleare unit telemetry counters.                                          |
+| 3    | Reset unit telemetry counters.                                          |
 | 4    | Sets write and read timeouts to the following 2 16bit big endian values. |
 
 ## Supported instructions
@@ -60,23 +60,23 @@ be used to periodically dump measured values.
 
 ## Unit telemetry
 
-After command 2 on command FIFO, unit telemetry is reported. The telemtetry
+After command 2 on command FIFO, unit telemetry is reported. The telemetry
 contains those values (all in big endian):
 
 
 | Offset  | Description                                                      |
 | ------- | ---------------------------------------------------------------- |
 | 0-1     | Current Instruction Pointer (IP).                                |
-| 2-5     | Out counter. Bytes send so far.                                  |
-| 6-9     | In counter. Bytes received so far.                               |
-| 10-13   | Out timeouted counter. Number of output writes timeouted so far. |
-| 14-17   | In timeouted counter. Number of input reads timeouted so far.    |
-| 18-19   | IP on error. Set to IP of last failed instruction.               |
-| 20-21   | Port write timeout value (in ms).                                |
-| 22-23   | Port read timeout value (in ms).                                 |
-| 24      | Error status. 1 for error, 0 for no errors.                      |
-| 25-26   | Error code.                                                      |
-| 27-28   | Data Modbus CRC-16.                                              |
+| 2-9     | Out counter. Bytes send so far.                                  |
+| 10-17   | In counter. Bytes received so far.                               |
+| 18-25   | Out timeouted counter. Number of output writes timeouted so far. |
+| 26-33   | In timeouted counter. Number of input reads timeouted so far.    |
+| 34-35   | IP on error. Set to IP of last failed instruction.               |
+| 36-37   | Port write timeout value (in ms).                                |
+| 38-39   | Port read timeout value (in ms).                                 |
+| 40      | Error status. 1 for error, 0 for no errors.                      |
+| 41-42   | Error code.                                                      |
+| 43-44   | Data Modbus CRC-16.                                              |
 
 * output counter - how many bytes were written to the port
 * input counter - how many bytes were received on the port
