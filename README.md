@@ -83,6 +83,28 @@ contains those values (all in big endian):
 * output timeout - how many writes timeouted
 * input timeout - how many reads timeouted
 
+## Unit error lines - error handling
+
+Current error state and code can be found in the unit telemetry - see above.
+
+The following strategy is used for error handling:
+
+* Errors inside operational part, which handles port communication etc., are
+  connected. That means if error occurred in some preceding step, the operation
+  will not be carried (as its input error wire is active)
+* Loops where error can signal problems must stop when error occurs
+* Error is being cleared on MPU Multiplex commands 0 and 1, e.g. either
+  explicitly (on command 0) on implicitly (on command 1, before executing new
+  commands; this makes sense, as when you command MPU, you would like to see
+  responses regardless of previous problems).
+* Error lines aren't connected in MPUMultiplex handling. This is to prevent
+  error triggered inside MPU unit (when serial communication is handled) to
+  stop new commanding.
+
+That allows new commands to be accepted regardless of any errors, which is
+intended behavior (otherwise commands to reset errors or query telemetry to see
+the errors would not be accepted).
+
 ### Example
 
 When following is passed to input FIFO, the processing unit will:
