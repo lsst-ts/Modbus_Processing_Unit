@@ -21,36 +21,89 @@ Add the library to your project. Create MPU object, and execute its Run method.
 You need to provide Command, Telemetry and Debug (Output) FIFOs, and port for
 commands. See [Example.vi](Example.vi) for details.
 
+## Command queue
+
+Command queue uses own multiplex to clear MPU error lines, program MPU or
+report port status. The command queue is checked for new command after run of
+a programmed loop (which is empty on startup). If command is available, it is
+executed, if not, programmed code is executed. This quarantees programming will
+not mess with program execution, as both cannot happen at the same time.
+
+| Code | Description                                            |
+| ---- | -------------------------------------------------------|
+| 0    | Reset error lines. If the program fails, error lines will be set. See unit telemetry for how to get current error lines status. |
+| 1    | Program MPU. Followed by single byte - program length, and the program itself. See below for supported instructions.            |
+| 2    | Report port telemetry to Telemetry FIFO.                                 |
+| 3    | Reset unit telemetry counters.                                          |
+| 4    | Sets write and read timeouts to the following 2 16bit big endian values. |
+
 ## Supported instructions
 
-| Instruction | Description                                             |
-| ----------- | ------------------------------------------------------- |
-| 0           | Stop executing and wait for a new instructions in FIFO. |
-| 1           | Write the next byte to the port.                        |
-| 2           | Wait for given ms.                                      |
-| 3           | Read from the port and store data into output array.    |
-| 4           | Loop (jump to some instruction, usually 0 to repeat the sequence; with looping, a check for commanding FIFO will be provided, and if that contains new instructions, instruction stack will be replaced with those new instructions). |
-| 5           | Check readout [CRC](https://en.wikipedia.org/wiki/Cyclic_redundancy_check), assumes CRC are two last bytes read. If CRC doesn't match, error 6000 is reported and FPGA processing stops. |
-| 6           | Write data to output FIFO.                              |
-| 20          | Write multiple bytes. Followed by number of bytes and paylod (bytes to transfer). |
-| 30          | Write byte(s) to telemetry. Instruction shall be followed with number of bytes and output array offset. |
-| 50          | Write to debug output port statistics - 64 bits (so 8*8 bits) output, input, counters and timeouts. |
-| 255         | Stops application loop, exit FPGA application. |
+| In. | Description                                             |
+| --- | ------------------------------------------------------- |
+| 0   | Stop executing and wait for a new instructions in FIFO. |
+| 1   | Write the next byte to the port.                        |
+| 2   | Wait for given ms.                                      |
+| 3   | Read from the port and store data into output array.    |
+| 4   | Loop (jump to some instruction, usually 0 to repeat the sequence; with looping, a check for commanding FIFO will be provided, and if that contains new instructions, instruction stack will be replaced with those new instructions). |
+| 5   | Check readout [CRC](https://en.wikipedia.org/wiki/Cyclic_redundancy_check), assumes CRC are two last bytes read. If CRC doesn't match, error 6000 is reported and FPGA processing stops. |
+| 6   | Write data to output FIFO and forgots content of output memory.     |
+| 20  | Write multiple bytes. Followed by number of bytes and paylod (bytes to transfer). |
+| 30  | Write byte(s) to telemetry. Instruction shall be followed with number of bytes and output array offset. |
+| 100 | Set write and read timeouts. Shall follow with 2 16 bit big endian values for write and read timeout in ms. |
+| 255 | Stops application loop, exit FPGA application.          |
 
 ### Telemetry
 
 Telemetry command (30) dumps U8 values. Offset is calucalted from 0. This can
 be used to periodically dump measured values.
 
-## Port statistics
+## Unit telemetry
 
-Port statistics command (50) writes to debug output following values. Values
-are written as low endian 64 bits numbers (into U8 FIFO).
+After command 2 on command FIFO, unit telemetry is reported. The telemetry
+contains those values (all in big endian):
+
+
+| Offset  | Description                                                      |
+| ------- | ---------------------------------------------------------------- |
+| 0-1     | Current Instruction Pointer (IP).                                |
+| 2-9     | Out counter. Bytes send so far.                                  |
+| 10-17   | In counter. Bytes received so far.                               |
+| 18-25   | Out timeouted counter. Number of output writes timeouted so far. |
+| 26-33   | In timeouted counter. Number of input reads timeouted so far.    |
+| 34-35   | IP on error. Set to IP of last failed instruction.               |
+| 36-37   | Port write timeout value (in ms).                                |
+| 38-39   | Port read timeout value (in ms).                                 |
+| 40      | Error status. 1 for error, 0 for no errors.                      |
+| 41-42   | Error code.                                                      |
+| 43-44   | Data Modbus CRC-16.                                              |
 
 * output counter - how many bytes were written to the port
 * input counter - how many bytes were received on the port
 * output timeout - how many writes timeouted
 * input timeout - how many reads timeouted
+
+## Unit error lines - error handling
+
+Current error state and code can be found in the unit telemetry - see above.
+
+The following strategy is used for error handling:
+
+* Errors inside operational part, which handles port communication etc., are
+  connected. That means if error occurred in some preceding step, the operation
+  will not be carried (as its input error wire is active)
+* Loops where error can signal problems must stop when error occurs
+* Error is being cleared on MPU Multiplex commands 0 and 1, e.g. either
+  explicitly (on command 0) on implicitly (on command 1, before executing new
+  commands; this makes sense, as when you command MPU, you would like to see
+  responses regardless of previous problems).
+* Error lines aren't connected in MPUMultiplex handling. This is to prevent
+  error triggered inside MPU unit (when serial communication is handled) to
+  stop new commanding.
+
+That allows new commands to be accepted regardless of any errors, which is
+intended behavior (otherwise commands to reset errors or query telemetry to see
+the errors would not be accepted).
 
 ### Example
 
